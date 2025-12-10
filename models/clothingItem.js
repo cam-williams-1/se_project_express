@@ -18,11 +18,25 @@ const clothingSchema = new mongoose.Schema({
       message: "You must enter a valid URL",
     },
   },
-  // Need to finish the schema
-  weather: {},
-  owner: {},
-  likes: {},
-  createdAt: {},
+  weather: {
+    type: String,
+    required: true,
+    enum: ["hot", "warm", "cold"],
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "user",
+  },
+  likes: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+    ref: "user",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model("user", clothingSchema);
+module.exports = mongoose.model("clothingItem", clothingSchema);

@@ -5,6 +5,7 @@ const {
   INTERNAL_SERVER_ERROR,
 } = require("../utils/errors");
 
+// Get all users
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
@@ -14,6 +15,7 @@ const getUsers = (req, res) => {
     });
 };
 
+// Get user by ID
 const getUser = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
@@ -31,7 +33,7 @@ const getUser = (req, res) => {
     });
 };
 
-// Pick up here, but run dev and db first !!!
+// Create new user
 const createUser = (req, res) => {
   const { name, avatar } = req.body;
 
