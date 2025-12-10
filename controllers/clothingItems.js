@@ -60,15 +60,16 @@ const addItemLike = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
+    .orFail()
     .then((item) => {
       res.status(201).send(item);
     })
     .catch((err) => {
-      if (!itemId) {
-        return res.status(BAD_REQUEST).send({ message: err.message });
-      }
-      if (itemId === null) {
+      if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
+      }
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: err.message });
       }
       return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
     });
@@ -77,21 +78,25 @@ const addItemLike = (req, res) => {
 const deleteItemLike = (req, res) => {
   const { itemId } = req.params;
 
-  ClothingItem.findByIdAndUpdate(itemId, { $pull: { likes: req.user._id } })
+  ClothingItem.findByIdAndUpdate(
+    itemId,
+    { $pull: { likes: req.user._id } },
+    { new: true }
+  )
+    .orFail()
     .then((item) => {
       res.status(200).send(item);
     })
     .catch((err) => {
-      if (!itemId) {
-        return res.status(BAD_REQUEST).send({ message: err.message });
-      }
-      if (itemId === null) {
+      if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
+      }
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: err.message });
       }
       return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
     });
 };
-
 module.exports = {
   createItem,
   getItems,
