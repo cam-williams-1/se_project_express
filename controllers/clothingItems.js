@@ -70,7 +70,7 @@ const addItemLike = (req, res) => {
       if (itemId === null) {
         return res.status(NOT_FOUND).send({ message: err.message });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
     });
 };
 
@@ -88,7 +88,7 @@ const deleteItemLike = (req, res) => {
       if (itemId === null) {
         return res.status(NOT_FOUND).send({ message: err.message });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
     });
 };
 
