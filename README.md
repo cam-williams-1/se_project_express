@@ -27,4 +27,4 @@ You can use this to add, update, or delete Users & Clothing Items from the datab
 
 ### Brief Functionaity Video
 
-Here is a quick run through of how this all works: ()
+Here is a quick run through of how this all works: (https://drive.google.com/file/d/1zlk284FAiN7uhiaJCosp6jSvIshIpysu/view?usp=drive_link).
