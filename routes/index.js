@@ -1,4 +1,9 @@
 const router = require("express").Router();
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  INTERNAL_SERVER_ERROR,
+} = require("../utils/errors");
 
 // Imported route handlers
 const userRouter = require("./users");
@@ -10,7 +15,7 @@ router.use("/items", clothingItemRouter);
 
 // Any requests to undefined routes
 router.use((req, res) => {
-  res.status(404).json({ message: "Requested resource not found" });
+  res.status(NOT_FOUND).json({ message: "Requested resource not found" });
 });
 
 module.exports = router;
