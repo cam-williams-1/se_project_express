@@ -64,6 +64,12 @@ const addItemLike = (req, res) => {
       res.status(201).send(item);
     })
     .catch((err) => {
+      if (!itemId) {
+        return res.status(BAD_REQUEST).send({ message: err.message });
+      }
+      if (itemId === null) {
+        return res.status(NOT_FOUND).send({ message: err.message });
+      }
       res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
     });
 };
@@ -76,6 +82,12 @@ const deleteItemLike = (req, res) => {
       res.status(200).send(item);
     })
     .catch((err) => {
+      if (!itemId) {
+        return res.status(BAD_REQUEST).send({ message: err.message });
+      }
+      if (itemId === null) {
+        return res.status(NOT_FOUND).send({ message: err.message });
+      }
       res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
     });
 };
