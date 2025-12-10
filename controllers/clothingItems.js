@@ -28,7 +28,9 @@ const getItems = (req, res) => {
     .then((items) => {
       res.status(200).send(items);
     })
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR).send({ message: err.message }));
+    .catch((err) =>
+      res.status(INTERNAL_SERVER_ERROR).send({ message: err.message })
+    );
 };
 
 // Delete a clothing item by ID
@@ -59,7 +61,7 @@ const addItemLike = (req, res) => {
     { new: true }
   )
     .then((item) => {
-      res.status(200).send(item);
+      res.status(201).send(item);
     })
     .catch((err) => {
       res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });

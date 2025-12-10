@@ -6,7 +6,7 @@ const clothingItemRouter = require("./clothingItems");
 
 // Specific routes
 router.use("/users", userRouter);
-router.use("/clothing-items", clothingItemRouter);
+router.use("/items", clothingItemRouter);
 
 // Any requests to undefined routes
 router.use((req, res) => {
