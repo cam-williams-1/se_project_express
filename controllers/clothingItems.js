@@ -12,7 +12,6 @@ const createItem = (req, res) => {
 
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => {
-      console.log(item);
       res.status(201).send({ data: item });
     })
     .catch((err) => {
@@ -29,9 +28,7 @@ const getItems = (req, res) => {
     .then((items) => {
       res.status(200).send(items);
     })
-    .catch((err) => {
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
-    });
+    .catch((err) => res.status(INTERNAL_SERVER_ERROR).send({ message: err.message }));
 };
 
 // Delete a clothing item by ID
@@ -47,9 +44,8 @@ const deleteItemById = (req, res) => {
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
       }
-      if (err.name === "CastError") {
+      if (err.name === "CastError")
         return res.status(BAD_REQUEST).send({ message: err.message });
-      }
       return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
     });
 };
