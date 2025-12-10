@@ -17,20 +17,23 @@ app.use((req, res, next) => {
 
 const { PORT = 3001 } = process.env;
 
-app.listen(3001, () => {
-  console.log(`Server is listening on port ${PORT}`);
+app.listen(PORT, () => {
+  // ESLint did not like this
+  // console.log(`Server is listening on port ${PORT}`);
 });
 
 // currently set to local host MongoDB, with name wtwr_db
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
-    console.log("Connected to MongoDB");
+    // ESLint did not like this
+    // console.log("Connected to MongoDB");
   })
   .catch(console.error);
 
 app.use("/", mainRouter);
 
-module.exports.createClothingItem = (req, res) => {
-  console.log(req.user._id);
-};
+// module.exports.createClothingItem = (req, res) => {
+//   // ESLint did not like this
+//   //console.log(req.user._id);
+// };
