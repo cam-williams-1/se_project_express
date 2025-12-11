@@ -1,9 +1,5 @@
 const router = require("express").Router();
-const {
-  BAD_REQUEST,
-  NOT_FOUND,
-  INTERNAL_SERVER_ERROR,
-} = require("../utils/errors");
+const { NOT_FOUND } = require("../utils/errors");
 
 // Imported route handlers
 const userRouter = require("./users");
