@@ -30,7 +30,3 @@ mongoose
   .catch(console.error);
 
 app.use("/", mainRouter);
-
-module.exports.createClothingItem = (req) => {
-  console.log(req.user._id);
-};
