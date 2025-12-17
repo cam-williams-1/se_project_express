@@ -1,8 +1,14 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../utils/config");
+
 const User = require("../models/user");
 const {
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
+  CONFLICT,
+  UNAUTHORIZED,
 } = require("../utils/errors");
 
 // Get all users
@@ -18,8 +24,9 @@ const getUsers = (req, res) => {
 };
 
 // Get user by ID
-const getUser = (req, res) => {
-  const { userId } = req.params;
+const getCurrentUser = (req, res) => {
+  const userId = req.user._id;
+
   User.findById(userId)
     .orFail()
     .then((user) => res.status(200).send(user))
@@ -39,10 +46,64 @@ const getUser = (req, res) => {
 
 // Create new user
 const createUser = (req, res) => {
+  const { name, avatar, email, password } = req.body;
+
+  bcrypt.hash(password, 10).then((hash) =>
+    User.create({ name, avatar, email, password: hash })
+      .then((user) => {
+        delete user._doc.password; // Remove password from the response
+        res.status(201).send(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.name === "ValidationError") {
+          return res.status(BAD_REQUEST).send({ message: "Invalid Data" });
+        }
+        if (err.code === 11000) {
+          return res
+            .status(CONFLICT)
+            .send({ message: "Please use a valid email" });
+        }
+        return res
+          .status(INTERNAL_SERVER_ERROR)
+          .send({ message: "An error has occured on the server" });
+      })
+  );
+};
+
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
+
+      res.status(200).send({ token });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(UNAUTHORIZED).send({ message: "UNAUTHORIZED" });
+    });
+};
+
+const updateUser = (req, res) => {
+  const userId = req.user._id;
   const { name, avatar } = req.body;
 
-  User.create({ name, avatar })
-    .then((user) => res.status(201).send(user))
+  User.findByIdAndUpdate(
+    userId,
+    { name, avatar },
+    { new: true, runValidators: true }
+  )
+    .then((user) => {
+      if (!user) {
+        return res.status(NOT_FOUND).send({ message: "User Not Found" });
+      }
+
+      res.status(200).send(user);
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -54,4 +115,4 @@ const createUser = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUser, getUser };
+module.exports = { getUsers, createUser, getCurrentUser, login, updateUser };

@@ -1,19 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const mainRouter = require("./routes/index");
 
 const app = express();
 
 app.use(express.json());
-
-// Mock user middleware
-app.use((req, res, next) => {
-  req.user = {
-    _id: "69399cee3af977f43f7956de",
-  };
-  next();
-});
+app.use(cors());
 
 const { PORT = 3001 } = process.env;
 

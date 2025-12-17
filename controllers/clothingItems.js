@@ -44,6 +44,9 @@ const deleteItemById = (req, res) => {
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => {
+      if (!item.owner === req.user._id) {
+        return res.status(BAD_REQUEST).send({ message: "Unauthorized Action" });
+      }
       res.status(200).send(item);
     })
     .catch((err) => {
