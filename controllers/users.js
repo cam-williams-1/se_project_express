@@ -50,7 +50,7 @@ const createUser = (req, res) => {
   bcrypt.hash(password, 10).then((hash) =>
     User.create({ name, avatar, email, password: hash })
       .then((data) => {
-        delete user.doc.password; // Remove password from the response
+        delete User.doc.password; // Remove password from the response
         return res.status(201).send(data);
       })
       .catch((err) => {
