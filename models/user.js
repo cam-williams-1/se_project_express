@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "An email is required"],
     unique: true,
+    validate: {
+      validator(value) {
+        return validator.isEmail(value);
+      },
+      message: "You must enter a valid email",
+    },
   },
   password: {
     type: String,
@@ -37,12 +43,12 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     .select("+password") // includes password in this query
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error("Incorrect email or password"));
+        throw new Error("Incorrect email or password"); // user not found
       }
 
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          return Promise.reject(new Error("Incorrect email or password"));
+          throw new Error("Incorrect email or password");
         }
         delete user._doc.password; // remove password from the returned user object
 

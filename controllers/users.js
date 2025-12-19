@@ -84,7 +84,13 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(UNAUTHORIZED).send({ message: "UNAUTHORIZED" });
+
+      if (err.name === "Error") {
+        return res.status(BAD_REQUEST).send({ message: "UNAUTHORIZED" });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: "An error has occured on the server" });
     });
 };
 

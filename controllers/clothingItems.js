@@ -3,6 +3,7 @@ const {
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
+  FORBIDDEN,
 } = require("../utils/errors");
 
 // Create a new clothing item
@@ -44,10 +45,10 @@ const deleteItemById = (req, res) => {
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => {
-      if (!item.owner === req.user._id) {
-        return res.status(BAD_REQUEST).send({ message: "Unauthorized Action" });
+      if (item.owner.toString() !== req.user._id.toString()) {
+        return res.status(FORBIDDEN).send({ message: "Unauthorized Action" });
       }
-      res.status(200).send(item);
+      return ClothingItem.findByIdAndDelete(itemId); // to ensure deletion after user is authorized
     })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
