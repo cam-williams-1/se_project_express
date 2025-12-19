@@ -8,7 +8,6 @@ const {
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
   CONFLICT,
-  UNAUTHORIZED,
 } = require("../utils/errors");
 
 // Get all users
@@ -51,8 +50,8 @@ const createUser = (req, res) => {
   bcrypt.hash(password, 10).then((hash) =>
     User.create({ name, avatar, email, password: hash })
       .then((user) => {
-        delete user._doc.password; // Remove password from the response
-        res.status(201).send(user);
+        delete user.doc.password; // Remove password from the response
+        return res.status(201).send(user);
       })
       .catch((err) => {
         console.error(err);
