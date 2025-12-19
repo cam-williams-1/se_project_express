@@ -49,9 +49,9 @@ const createUser = (req, res) => {
 
   bcrypt.hash(password, 10).then((hash) =>
     User.create({ name, avatar, email, password: hash })
-      .then((user) => {
+      .then((data) => {
         delete user.doc.password; // Remove password from the response
-        return res.status(201).send(user);
+        return res.status(201).send(data);
       })
       .catch((err) => {
         console.error(err);
@@ -107,7 +107,7 @@ const updateUser = (req, res) => {
         return res.status(NOT_FOUND).send({ message: "User Not Found" });
       }
 
-      res.status(200).send(user);
+      return res.status(200).send(user);
     })
     .catch((err) => {
       console.error(err);
