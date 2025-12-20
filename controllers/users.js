@@ -29,7 +29,9 @@ const getCurrentUser = (req, res) => {
 
   User.findById(userId)
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((user) => {
+      return res.status(200).send({ user });
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
@@ -86,6 +88,15 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+
+      if (!email) {
+        return res.status(BAD_REQUEST).send({ message: "Email is required" });
+      }
+      if (!password) {
+        return res
+          .status(BAD_REQUEST)
+          .send({ message: "Password is required" });
+      }
 
       if (err.name === "Error") {
         return res
