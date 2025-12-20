@@ -3,6 +3,7 @@ const { UNAUTHORIZED } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
 module.exports = (req, res, next) => {
+  // NOTE: Lint tells me to destructure, DOT tells me not to. What should i do?
   const { authorization } = req.headers.authorization;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {

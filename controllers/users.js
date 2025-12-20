@@ -8,19 +8,20 @@ const {
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
   CONFLICT,
+  UNAUTHORIZED,
 } = require("../utils/errors");
 
 // Get all users
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.status(200).send(users))
-    .catch((err) => {
-      console.error(err);
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
-    });
-};
+// const getUsers = (req, res) => {
+//   User.find({})
+//     .then((users) => res.status(200).send(users))
+//     .catch((err) => {
+//       console.error(err);
+//       return res
+//         .status(INTERNAL_SERVER_ERROR)
+//         .send({ message: "An error has occurred on the server" });
+//     });
+// };
 
 // Get user by ID
 const getCurrentUser = (req, res) => {
@@ -39,7 +40,7 @@ const getCurrentUser = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -49,9 +50,11 @@ const createUser = (req, res) => {
 
   bcrypt.hash(password, 10).then((hash) =>
     User.create({ name, avatar, email, password: hash })
-      .then((data) => {
-        delete User.doc.password; // Remove password from the response
-        return res.status(201).send(data);
+      .then((user) => {
+        const userObj = user.toObject();
+
+        delete userObj.password; // Remove password from the response
+        return res.status(201).send(userObj);
       })
       .catch((err) => {
         console.error(err);
@@ -65,7 +68,7 @@ const createUser = (req, res) => {
         }
         return res
           .status(INTERNAL_SERVER_ERROR)
-          .send({ message: "An error has occured on the server" });
+          .send({ message: "An error has occurred on the server" });
       })
   );
 };
@@ -85,11 +88,13 @@ const login = (req, res) => {
       console.error(err);
 
       if (err.name === "Error") {
-        return res.status(BAD_REQUEST).send({ message: "UNAUTHORIZED" });
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -116,8 +121,8 @@ const updateUser = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
-module.exports = { getUsers, createUser, getCurrentUser, login, updateUser };
+module.exports = { createUser, getCurrentUser, login, updateUser };

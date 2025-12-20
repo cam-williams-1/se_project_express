@@ -21,7 +21,7 @@ const createItem = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -34,7 +34,7 @@ const getItems = (req, res) => {
     .catch(() =>
       res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" })
+        .send({ message: "An error has occurred on the server" })
     );
 };
 
@@ -42,13 +42,14 @@ const getItems = (req, res) => {
 const deleteItemById = (req, res) => {
   const { itemId } = req.params;
 
+  // DOT suggested a confusing fix to this...
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id.toString()) {
         return res.status(FORBIDDEN).send({ message: "Unauthorized Action" });
       }
-      return ClothingItem.findByIdAndDelete(itemId); // to ensure deletion after user is authorized
+      return res.status(200).send(item); // to ensure deletion after user is authorized
     })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
@@ -58,7 +59,7 @@ const deleteItemById = (req, res) => {
         return res.status(BAD_REQUEST).send({ message: "Invalid Data" });
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -83,7 +84,7 @@ const addItemLike = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -108,7 +109,7 @@ const deleteItemLike = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error occured on the server" });
+        .send({ message: "An error occurred on the server" });
     });
 };
 module.exports = {

@@ -9,6 +9,9 @@ const {
   deleteItemLike,
 } = require("../controllers/clothingItems");
 
+// should be protected before auth middleware
+router.get("/", getItems);
+
 // CRUD
 router.use(auth);
 
@@ -16,7 +19,6 @@ router.use(auth);
 router.post("/", createItem);
 
 // R -- gets all clothing items
-router.get("/", getItems);
 
 // U -- adds a like to a clothing item by ID
 router.put("/:itemId/likes", addItemLike);
