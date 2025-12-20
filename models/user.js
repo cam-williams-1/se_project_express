@@ -50,9 +50,9 @@ userSchema.statics.findUserByCredentials = function (email, password) {
         if (!matched) {
           throw new Error("Incorrect email or password");
         }
-        const userObj = user.toObject();
-        delete userObj.password; // remove password from the returned user object
-        return userObj; // user is authenticated
+
+        user.password = undefined;
+        return user; // user is authenticated
       });
     });
 };
