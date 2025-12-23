@@ -51,8 +51,7 @@ userSchema.statics.findUserByCredentials = function (email, password) {
           throw new Error("Incorrect email or password");
         }
 
-        user.password = undefined;
-        return user; // user is authenticated
+        return this.findById(user._id); // user is authenticated
       });
     });
 };
