@@ -82,7 +82,9 @@ const login = (req, res) => {
         expiresIn: "7d",
       });
 
-      res.status(200).send({ token });
+      const userObj = user.toObject();
+      delete userObj.password; // Remove password from the response
+      res.status(200).send({ token, user: userObj });
     })
     .catch((err) => {
       console.error(err);
