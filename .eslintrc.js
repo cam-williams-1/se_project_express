@@ -23,5 +23,7 @@ module.exports = {
     // warning for console.log - allow console.error
     "no-console": ["warn", { allow: ["error"] }],
     "no-underscore-dangle": ["error", { allow: ["_id"] }],
+    // exception for 'next'
+    "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
   },
 };

@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const errorHandler = require("./middlewares/error-handler");
 
 const app = express();
 
@@ -24,3 +25,5 @@ mongoose
   .catch(console.error);
 
 app.use("/", mainRouter);
+
+app.use(errorHandler);
