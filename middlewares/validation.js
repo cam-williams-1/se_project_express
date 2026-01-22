@@ -24,7 +24,7 @@ module.exports.validateCardBody = celebrate({
   }),
 });
 
-module.exports.validateUserBody = celebreate({
+module.exports.validateUserBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
       "string.min": 'The minimum length of the "name" field is 2',
@@ -58,7 +58,7 @@ module.exports.validateAuthentication = celebrate({
 });
 
 module.exports.validateId = celebrate({
-  paramsms: Joi.object().keys({
+  params: Joi.object().keys({
     itemId: Joi.string().hex().length(24).required().messages({
       "string.length": 'The "itemId" must be 24 characters long',
       "string.hex": 'The "itemId" must be a valid hexadecimal',
