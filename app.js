@@ -1,3 +1,5 @@
+require("dotenv").config(); // gives access to an object called process.env
+
 const express = require("express");
 const mongoose = require("mongoose");
 const { errors } = require("celebrate");
