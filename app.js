@@ -29,6 +29,13 @@ mongoose
   })
   .catch(console.error);
 
+// REMOVE AFTER REVIEW - For testing server crash
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("The server will crash now");
+  }, 0);
+});
+
 app.use("/", mainRouter);
 
 // ERRORS
