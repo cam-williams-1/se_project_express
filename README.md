@@ -14,16 +14,18 @@ You can use this to add, update, or delete Users & Clothing Items from the datab
 - Express.js
 - Postman
 - Mongoose
-- MongoDB, Compass
+- MongoDB
 - ESLint
+- Google Cloud VM
+- nginx and pm2
 
 ## Running the Project
 
-`npm run start` — to launch the server
+Deployed Project Domain: (https://www.vanguardbit.jumpingcrab.com)
 
-`npm run db` - to launch the local database
+## REPOS
 
-`npm run dev` — to launch the server with the hot reload feature
+Frontend Repo (https://github.com/cam-williams-1/se_project_react)
 
 ### Brief Functionaity Video
 
