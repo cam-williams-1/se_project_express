@@ -44,9 +44,7 @@ const deleteItemById = (req, res, next) => {
       }
       return item.deleteOne();
     })
-    .then(() => {
-      return res.status(200).send(item);
-    })
+    .then((item) => res.status(200).send(item))
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         next(new NotFoundError("Data Not Found"));
