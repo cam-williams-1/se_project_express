@@ -29,4 +29,4 @@ Frontend Repo (https://github.com/cam-williams-1/se_project_react)
 
 ### Brief Functionaity Video
 
-Here is a quick run through of how this all works: (https://drive.google.com/file/d/1zlk284FAiN7uhiaJCosp6jSvIshIpysu/view?usp=drive_link).
+Here is a quick run through of how this all works: (https://drive.google.com/file/d/1Aarm2PwBuDGsEHMnUy4Z5-xG4koOmAKR/view?usp=sharing).
