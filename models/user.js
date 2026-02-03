@@ -31,9 +31,9 @@ const userSchema = new mongoose.Schema({
     },
   },
   password: {
+    // password being handled by bcrypt
     type: String,
     required: [true, "A password is required"],
-    minlength: 8,
     select: false, // excludes hashed password from query results
   },
 });

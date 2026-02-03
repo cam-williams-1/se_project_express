@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { NOT_FOUND } = require("../utils/errors");
+const NotFoundError = require("../errors/NotFoundError");
 const {
   validateUserBody,
   validateAuthentication,
@@ -21,7 +21,7 @@ router.post("/signup", validateUserBody, createUser);
 
 // Any requests to undefined routes
 router.use((req, res) => {
-  res.status(NOT_FOUND).json({ message: "Requested resource not found" });
+  return next(new NotFoundError("Requested resource not found"));
 });
 
 module.exports = router;

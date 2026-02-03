@@ -1,17 +1,8 @@
 const ClothingItem = require("../models/clothingItem");
-const {
-  BadRequestError,
-  ForbiddenError,
-  NotFoundError,
-} = require("../middlewares/custom-errors");
 
-// DELETE and DELETE utils/errors.js
-// const {
-//   BAD_REQUEST,
-//   NOT_FOUND,
-//   INTERNAL_SERVER_ERROR,
-//   FORBIDDEN,
-// } = require("../utils/errors");
+const BadRequestError = require("../errors/BadRequestError");
+const NotFoundError = require("../errors/NotFoundError");
+const ForbiddenError = require("../errors/ForbiddenError");
 
 // Create a new clothing item
 const createItem = (req, res, next) => {
@@ -44,14 +35,17 @@ const getItems = (req, res, next) => {
 const deleteItemById = (req, res, next) => {
   const { itemId } = req.params;
 
-  // DOT suggested a confusing fix to this...
-  ClothingItem.findByIdAndDelete(itemId)
+  // finds item by id, then if successful deletes it
+  ClothingItem.findById(itemId)
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id.toString()) {
         next(new ForbiddenError("Unauthorized Action"));
       }
-      return res.status(200).send(item); // to ensure deletion after user is authorized
+      return item.deleteOne();
+    })
+    .then(() => {
+      return res.status(200).send(item);
     })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {

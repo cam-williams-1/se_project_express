@@ -3,21 +3,10 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 const User = require("../models/user");
 
-const {
-  BadRequestError,
-  NotFoundError,
-  ConflictError,
-  UnauthorizedError,
-} = require("../middlewares/custom-errors");
-
-// DELETE and DELETE utils/errors.js
-// const {
-//   BAD_REQUEST,
-//   NOT_FOUND,
-//   INTERNAL_SERVER_ERROR,
-//   CONFLICT,
-//   UNAUTHORIZED,
-// } = require("../utils/errors");
+const BadRequestError = require("../errors/BadRequestError");
+const NotFoundError = require("../errors/NotFoundError");
+const ConflictError = require("../errors/ConflictError");
+const UnauthorizedError = require("../errors/UnauthorizedError");
 
 // Get user by ID
 const getCurrentUser = (req, res, next) => {
